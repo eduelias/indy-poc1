@@ -45,6 +45,9 @@
       "@services/*": [
         "services/*"
       ],
+      "@servers/*": [
+        "servers/*"
+      ],
       "*": [
         "node_modules/*",
         "src/types/*"

@@ -1,0 +1,180 @@
+import * as ffi from 'ffi';
+import * as vcx from 'node-vcx-wrapper';
+import * as sleep from 'sleep';
+
+const {
+  Schema,
+  CredentialDef,
+  Connection,
+  IssuerCredential,
+  Logger,
+  Proof,
+  StateType,
+  VCXMock,
+} = vcx;
+
+const provisionString =
+  '{"agency_url":"https://eas-team1.pdev.evernym.com","agency_did":"CV65RFpeCtPu82hNF9i61G","agency_verkey":"7G3LhXFKXKTMv7XGx1Qc9wqkMbwcU2iLBHL8x1JXWWC2","wallet_name":"faber_wallet","wallet_key":"123","enterprise_seed":"000000000000000000000000Trustee1"}';
+
+const main = async (): null => {
+  console.log(
+    '#1 Provision an agent and wallet, get back configuration details',
+  );
+  const config = await provisionAgent(provisionString);
+  const configJson = JSON.parse(config);
+  // Set some additional configuration options specific to faber
+  configJson['institution_name'] = 'Faber';
+  configJson['institution_logo_url'] = 'http://robohash.org/234';
+  configJson['genesis_path'] = 'genesis.txn';
+  configJson['payment_method'] = 'sov';
+
+  const libn = ffi.Library('libsovtoken', {
+    sovtoken_init: ['int', []],
+  });
+  libn.sovtoken_init();
+
+  // vcx.defaultLogger('trace')
+
+  console.log('#2 Initialize libvcx with new configuration');
+  await vcx.initVcxWithConfig(JSON.stringify(configJson));
+
+  console.log('#3 Create a new schema on the ledger');
+  const SCHEMA = {
+    sourceId: 'schema_uuid',
+    data: {
+      name: 'degree',
+      version:
+        Math.floor(Math.random() * 100 + 1) +
+        '.' +
+        Math.floor(Math.random() * 100 + 1) +
+        '.' +
+        Math.floor(Math.random() * 100 + 1),
+      attrNames: ['name', 'date', 'degree'],
+    },
+    paymentHandle: 0,
+  };
+
+  const schema = await Schema.create(SCHEMA);
+  const mySchemaId = await schema.getSchemaId();
+
+  console.log('#4 Create a new credential definition on the ledger');
+  const CREDENTIAL_DEF = {
+    name: 'degree',
+    revocationDetails: {},
+    schemaId: mySchemaId,
+    sourceId: 'cred_def_uuid',
+    payment_handle: 0,
+  };
+
+  const credentialDef = await CredentialDef.create(CREDENTIAL_DEF);
+  const myCredDefId = await credentialDef.getCredDefId();
+
+  console.log(
+    '#5 Create a connection to alice and print out the invite details',
+  );
+  const connectionToAlice = await Connection.create({ id: 'connection' });
+  await connectionToAlice.connect({ id: 'connection' });
+  console.log('**invite details**');
+  console.log(await connectionToAlice.inviteDetails(false));
+  console.log('******************');
+  await connectionToAlice.updateState();
+
+  console.log(
+    '#6 Poll agency and wait for alice to accept the invitation (start alice.js now)',
+  );
+  let connectionState = await connectionToAlice.getState();
+  while (connectionState !== StateType.Accepted) {
+    sleep.sleep(2);
+    await connectionToAlice.updateState();
+    connectionState = await connectionToAlice.getState();
+  }
+
+  const schemaAttrs = {
+    name: 'alice',
+    date: '05-2018',
+    degree: 'maths',
+  };
+
+  console.log(
+    '#12 Create an IssuerCredential object using the schema and credential definition',
+  );
+  const credential = await IssuerCredential.create({
+    sourceId: 'alice_degree',
+    credDefHandle: credentialDef.handle,
+    attr: schemaAttrs,
+    price: '0',
+    credentialName: 'FREE',
+  });
+
+  console.log('#13 Issue credential offer to alice');
+  await credential.sendOffer(connectionToAlice);
+  await credential.updateState();
+
+  console.log(
+    '#14 Poll agency and wait for alice to send a credential request',
+  );
+  let credentialState = await credential.getState();
+  while (credentialState !== StateType.RequestReceived) {
+    sleep.sleep(2);
+    await credential.updateState();
+    credentialState = await credential.getState();
+  }
+
+  console.log('#17 Issue credential to alice');
+  await credential.sendCredential(connectionToAlice);
+
+  console.log('#18 Wait for alice to accept credential');
+  await credential.updateState();
+  credentialState = await credential.getState();
+  while (credentialState !== StateType.Accepted) {
+    sleep.sleep(2);
+    await credential.updateState();
+    credentialState = await credential.getState();
+  }
+
+  const proofAttrs = [
+    {
+      name: 'name',
+      restrictions: [{ issuer_did: configJson['institution_did'] }],
+    },
+    {
+      name: 'date',
+      restrictions: [{ issuer_did: configJson['institution_did'] }],
+    },
+    {
+      name: 'degree',
+      restrictions: [{ issuer_did: configJson['institution_did'] }],
+    },
+  ];
+
+  console.log('#19 Create a Proof object');
+  const proof = await Proof.create({
+    sourceId: 'proof',
+    name: 'proof',
+    attrs: proofAttrs,
+    revocationInterval: {},
+  });
+
+  console.log('#20 Request proof of degree from alice');
+  await proof.requestProof(connectionToAlice);
+
+  console.log('#21 Poll agency and wait for alice to provide proof');
+  let proofState = await proof.getState();
+  while (proofState !== StateType.Accepted) {
+    sleep.sleep(2);
+    await proof.updateState();
+    proofState = await proof.getState();
+  }
+
+  console.log('#27 Process the proof provided by alice');
+  const proofData = await proof.getProof(connectionToAlice);
+
+  console.log('#28 Check if proof is valid');
+  if (proofData.proofState === 1) {
+    console.log('proof is verified!!');
+  } else {
+    console.log('could not verify proof :(');
+  }
+};
+
+main();

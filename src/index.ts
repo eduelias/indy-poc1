@@ -1,10 +1,12 @@
-import 'module-alias/register';
+import './alias';
+import { HtmlServer } from '@servers/html';
+import { SocketServer } from '@servers/socket';
 
-export class Issuer {
-  public Issue(somethig: string): Promise<string> {
-    const b = (c: string | PromiseLike<string> | undefined): string => `${c}`;
-    return new Promise((a) => {
-      return `${somethig} ${b('a')} Edu: ${a}`;
-    });
-  }
-}
+const htmlServer = new HtmlServer();
+htmlServer.listen(80);
+
+const faberServer = new SocketServer('Faber', htmlServer.getHtmlServer());
+faberServer.listen(3000);
+
+const aliceServer = new SocketServer('Alice', htmlServer.getHtmlServer());
+aliceServer.listen(3001);
