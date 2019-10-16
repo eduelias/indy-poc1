@@ -1,6 +1,6 @@
-import './alias';
-import { HtmlServer } from '@servers/html';
-import { SocketServer } from '@servers/socket';
+import './Alias';
+import { HtmlServer } from '@servers/HtmlServer';
+import { SocketServer } from '@servers/SocketServer';
 
 const htmlServer = new HtmlServer();
 htmlServer.listen(80);
