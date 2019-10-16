@@ -4,6 +4,7 @@
   "description": "My first Indy Agent PoC",
   "main": "index.js",
   "scripts": {
+    "start": "tsc && node dist/index.js",
     "test": "jest",
     "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
     "postinstall": "node-config-ts"
@@ -46,8 +47,10 @@
     "typescript": "^3.6.4"
   },
   "dependencies": {
+    "@types/mkdirp": "^0.5.2",
     "@types/socket.io": "^2.1.4",
     "ffi": "^2.3.0",
+    "indy-sdk": "^1.12.0-dev-1356",
     "module-alias": "^2.2.2",
     "node-config-ts": "^2.2.4",
     "node-vcx-wrapper": "^0.4.2-dev-1356",
@@ -57,6 +60,7 @@
   "_moduleAliases": {
     "@modules": "dist/modules",
     "@services": "dist/services",
-    "@servers": "dist/servers"
+    "@servers": "dist/servers",
+    "@config": "config"
   }
 }

@@ -48,6 +48,9 @@
       "@servers/*": [
         "servers/*"
       ],
+      "@config/*": [
+        "../config/*"
+      ],
       "*": [
         "node_modules/*",
         "src/types/*"

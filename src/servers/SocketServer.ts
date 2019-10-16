@@ -17,6 +17,12 @@ export class SocketServer {
     this.on('connection', (socket) => {
       console.log(`user connected at ${this.name} through port ${port}.`);
       socket.emit('welcome', { message: 'hello' });
+      socket.on('disconnect', () => {
+        console.log(`user ${this.name} disconnected from port ${port}`);
+        socket.emit('goodbye', {
+          message: `Bye ${this.name}!`,
+        });
+      });
     });
   }
 
