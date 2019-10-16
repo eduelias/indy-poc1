@@ -10,6 +10,7 @@ export class HtmlServer {
   }
 
   public listen(port: number): void {
+    console.log(`Html server listening at ${port}`);
     this.htmlServer.listen(port);
   }
 
