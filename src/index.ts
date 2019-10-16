@@ -1,9 +1,11 @@
 import './Alias';
 import { HtmlServer } from '@servers/HtmlServer';
 import { SocketServer } from '@servers/SocketServer';
-import config from 'node-config-ts';
+import { ConfigService } from '@services/ConfigService';
 
-console.log(config);
+const cm = new ConfigService();
+
+console.log(cm.GetConfig());
 
 const htmlServer = new HtmlServer();
 htmlServer.listen(80);

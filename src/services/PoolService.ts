@@ -2,7 +2,6 @@ import fs from 'fs';
 import mkdirp from 'mkdirp';
 import os from 'os';
 import { join } from 'path';
-//import config from 'node-config-ts';
 
 export class UtilService {
   private pathAsArray: string[] = [os.tmpdir(), 'indy'];

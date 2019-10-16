@@ -83,7 +83,7 @@
       "txnId": "7e9f355dffa78ed24668f0e0e369fd8c224076571c51e2ea8be5f26479edebe4"
     },
     "ver": "1"
-  } {
+  }, {
     "reqSignature": {},
     "txn": {
       "data": {
