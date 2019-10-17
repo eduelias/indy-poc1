@@ -16,19 +16,18 @@ export class PoCService {
     const poolService = new PoolService(config);
 
     const indyService = new IndyService(config, poolService, console);
-    console.log(await indyService.getPool());
 
     const stewd = new IndyActorService(
       'stewardWalletName',
       'steward_key',
       '000000000000000000000000Steward1',
       indyService,
+      console,
     );
 
     await stewd.createWallet();
-    const stewdWallet = await stewd.openWallet();
-
-    console.log(stewdWallet);
+    await stewd.openWallet();
+    await stewd.createAndStoreDid();
 
     const faberServer = new SocketServer('Faber', htmlServer.getHtmlServer());
     faberServer.listen(3000);

@@ -32,7 +32,7 @@ export class IndyService {
 
     this.poolHandle = await indy.openPoolLedger(this.config.poolName);
 
-    this.logger.trace('Pool open.');
+    this.logger.debug('Pool open.');
   }
 
   public async getPool(): Promise<any> {
@@ -50,6 +50,7 @@ export class IndyService {
       await indy.createWallet({ id: settings.id }, { key: settings.key });
     } catch (e) {
       if (e.message !== 'WalletAlreadyExistsError') {
+        this.logger.trace(e);
         throw e;
       }
     }
@@ -57,5 +58,9 @@ export class IndyService {
 
   public async openWallet(settings: { id: string; key: string }): Promise<any> {
     return await indy.openWallet({ id: settings.id }, { key: settings.key });
+  }
+
+  public async createAndStoreDid(wallet: any, info: any): Promise<any> {
+    return await indy.createAndStoreMyDid(wallet, info);
   }
 }
