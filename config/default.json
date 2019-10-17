@@ -1,5 +1,6 @@
 {
-  "port": "@@HTML_PORT",
+  "poolName": "LOCAL_INDY",
+  "port": "80",
   "genesisTxn": [{
       "reqSignature": {},
       "txn": {

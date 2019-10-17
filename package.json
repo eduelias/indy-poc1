@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && node dist/index.js",
+    "debug": "tsc && node dist/index.js --inspect",
     "test": "jest",
     "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
     "postinstall": "node-config-ts"

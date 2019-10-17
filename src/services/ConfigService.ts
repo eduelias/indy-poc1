@@ -64,7 +64,7 @@ export class ConfigService {
     return newObject;
   }
 
-  public GetConfig(): ConfigModel {
+  public GetConfig(): ConfigSchema {
     if (!ConfigService.Instance) {
       let cfg = this.loadEnv(
         // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -87,7 +87,8 @@ export class ConfigService {
   }
 }
 
-export interface ConfigModel {
+export interface ConfigSchema {
+  poolName: string;
   port: number;
   genesisTxn: any;
 }

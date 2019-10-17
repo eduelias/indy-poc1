@@ -1,9 +1,15 @@
+import { ConfigSchema } from './ConfigService';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 import os from 'os';
 import { join } from 'path';
 
-export class UtilService {
+export class PoolService {
+  /**
+   *
+   */
+  constructor(private config: ConfigSchema) {}
+
   private pathAsArray: string[] = [os.tmpdir(), 'indy'];
 
   public async getPoolGenesisTxnPath(poolName: string): Promise<string> {
@@ -15,10 +21,8 @@ export class UtilService {
     return path;
   }
 
-  public async poolGenesisTxnData(): Promise<string> {
-    return ''; // config.genesisTxn
-    // .map((gtx: GenesisTxn) => JSON.stringify(gtx))
-    // .join();
+  public poolGenesisTxnData(): string {
+    return this.config.genesisTxn.map((gtx: any) => JSON.stringify(gtx)).join();
   }
 
   public async savePoolGenesisTxnFile(path: string): Promise<void> {
