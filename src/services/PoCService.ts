@@ -1,3 +1,4 @@
+import { IndyActorService } from './IndyActorService';
 import { HtmlServer } from '@servers/HtmlServer';
 import { SocketServer } from '@servers/SocketServer';
 import { ConfigSchema, ConfigService } from '@services/ConfigService';
@@ -15,7 +16,19 @@ export class PoCService {
     const poolService = new PoolService(config);
 
     const indyService = new IndyService(config, poolService, console);
-    console.log(indyService.getPool());
+    console.log(await indyService.getPool());
+
+    const stewd = new IndyActorService(
+      'stewardWalletName',
+      'steward_key',
+      '000000000000000000000000Steward1',
+      indyService,
+    );
+
+    await stewd.createWallet();
+    const stewdWallet = await stewd.openWallet();
+
+    console.log(stewdWallet);
 
     const faberServer = new SocketServer('Faber', htmlServer.getHtmlServer());
     faberServer.listen(3000);

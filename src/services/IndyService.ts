@@ -41,4 +41,21 @@ export class IndyService {
     }
     return this.poolHandle;
   }
+
+  public async createWallet(settings: {
+    id: string;
+    key: string;
+  }): Promise<any> {
+    try {
+      await indy.createWallet({ id: settings.id }, { key: settings.key });
+    } catch (e) {
+      if (e.message !== 'WalletAlreadyExistsError') {
+        throw e;
+      }
+    }
+  }
+
+  public async openWallet(settings: { id: string; key: string }): Promise<any> {
+    return await indy.openWallet({ id: settings.id }, { key: settings.key });
+  }
 }
