@@ -8,13 +8,19 @@ import io from 'socket.io';
  * @class SocketServer
  */
 export class SocketServer {
+  events: { [name: string]: (...args: any[]) => void } = {};
   server: io.Server | undefined;
-
-  constructor(public name: string | undefined, public htmlServer: Server) {}
+  activeConnection?: io.Socket;
+  constructor(public name: string | undefined, public htmlServer: Server) {
+    this.server = io(this.htmlServer);
+  }
 
   public listen(port: number): void {
-    this.server = io(this.htmlServer).listen(port);
-    this.on('connection', (socket) => {
+    if (!this.server) throw new Error('Socket server offlien');
+
+    this.server.listen(port);
+    this.server.on('connection', (socket) => {
+      this.activeConnection = socket;
       console.log(`user connected at ${this.name} through port ${port}.`);
       socket.emit('welcome', { message: 'hello' });
       socket.on('disconnect', () => {
@@ -23,16 +29,14 @@ export class SocketServer {
           message: `Bye ${this.name}!`,
         });
       });
+
+      Object.keys(this.events).map((event) =>
+        socket.on(event, this.events[event]),
+      );
     });
   }
 
-  public on(
-    event: string,
-    listener: (socket: io.Socket) => void,
-  ): io.Namespace {
-    if (!this.server) {
-      throw new Error('listener not set');
-    }
-    return this.server.on(event, listener);
+  public on(event: string, listener: (socket: any) => void): void {
+    this.events[event] = listener;
   }
 }

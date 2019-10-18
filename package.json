@@ -61,6 +61,7 @@
     "@modules": "dist/modules",
     "@services": "dist/services",
     "@servers": "dist/servers",
+    "@model": "dist/model",
     "@config": "config"
   }
 }
