@@ -1,5 +1,5 @@
-import { IndyDidService } from './DidService';
-import { IndyActor } from '@model/indy/Actor';
+import { IndyActor } from '@Model/indy/Actor';
+import { IndyDidService } from '@Services/Indy/IndyDidService';
 import indy from 'indy-sdk';
 
 export class IndyStewardService extends IndyDidService {

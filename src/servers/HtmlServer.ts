@@ -20,7 +20,7 @@ export class HtmlServer {
 
   public handler(req: IncomingMessage, res: ServerResponse): void {
     readFile(
-      join(__dirname, '..', '..', 'static_content', 'html', 'index.html'),
+      join(__dirname, '..', '..', 'StaticContent', 'html', 'index.html'),
       (err, data) => {
         if (err) {
           res.writeHead(500);

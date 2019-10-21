@@ -1,4 +1,4 @@
-import { ConfigSchema } from './ConfigService';
+import { ConfigSchema } from '@Services/ConfigService';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 import os from 'os';
@@ -37,7 +37,7 @@ export class PoolService {
         .split('/')
         .slice(0, path.split('/').length - 1)
         .join('/');
-      mkdirp(folderPath, (err) => {
+      mkdirp(folderPath, (err: any) => {
         if (err) reject(err);
         else resolve();
       });

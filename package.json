@@ -43,6 +43,7 @@
     "husky": "^3.0.9",
     "jest": "^24.9.0",
     "lint-staged": "^9.4.2",
+    "node-config-ts": "^2.2.4",
     "prettier": "^1.18.2",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.4"
@@ -51,17 +52,17 @@
     "@types/mkdirp": "^0.5.2",
     "@types/socket.io": "^2.1.4",
     "ffi": "^2.3.0",
-    "indy-sdk": "^1.12.0-dev-1356",
+    "indy-sdk": "^1.12.0-dev-1365",
     "module-alias": "^2.2.2",
     "node-vcx-wrapper": "^0.4.2-dev-1356",
     "sleep": "^6.1.0",
     "socket.io": "^2.3.0"
   },
   "_moduleAliases": {
-    "@modules": "dist/modules",
-    "@services": "dist/services",
-    "@servers": "dist/servers",
-    "@model": "dist/model",
-    "@config": "config"
+    "@Modules": "dist/Modules",
+    "@Services": "dist/Services",
+    "@Servers": "dist/Servers",
+    "@Model": "dist/Model",
+    "@Config": "Config"
   }
 }

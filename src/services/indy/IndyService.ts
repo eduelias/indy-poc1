@@ -1,7 +1,7 @@
-import { ConfigSchema } from '../ConfigService';
-import { PoolService } from '../PoolService';
-import { IndyActor } from '@model/indy/Actor';
-import { IndyDid } from '@model/indy/Did';
+import { IndyActor } from '@Model/Indy/Actor';
+import { IndyDid } from '@Model/Indy/Did';
+import { ConfigSchema } from '@Services/ConfigService';
+import { PoolService } from '@Services/PoolService';
 import indy from 'indy-sdk';
 
 export class IndyService {

@@ -19,7 +19,7 @@ export class SocketServer {
     if (!this.server) throw new Error('Socket server offlien');
 
     this.server.listen(port);
-    this.server.on('connection', (socket) => {
+    this.server.on('connection', (socket: io.Socket) => {
       this.activeConnection = socket;
       console.log(`user connected at ${this.name} through port ${port}.`);
       socket.emit('welcome', { message: 'hello' });

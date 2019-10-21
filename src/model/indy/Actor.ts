@@ -1,4 +1,4 @@
-import { IndyDid } from '@model/indy/Did';
+import { IndyDid } from '@Model/Indy/Did';
 
 export class IndyActor {
   public did?: IndyDid;

@@ -1,6 +1,6 @@
 import { IndyService } from './IndyService';
-import { IndyActor } from '@model/indy/Actor';
-import { IndyDid } from '@model/indy/Did';
+import { IndyActor } from '@Model/Indy/Actor';
+import { IndyDid } from '@Model/Indy/Did';
 
 export class IndyDidService {
   /**

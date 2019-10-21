@@ -1,12 +1,12 @@
-import { IndyDidService } from './indy/DidService';
-import { IndyStewardService } from './indy/IndyStewardService';
-import { IndyActor } from '@model/indy/Actor';
-import { HtmlServer } from '@servers/HtmlServer';
-import { SocketServer } from '@servers/SocketServer';
-import { ConfigSchema, ConfigService } from '@services/ConfigService';
-import { IndyService } from '@services/indy/IndyService';
-import { PoolService } from '@services/PoolService';
-import { SocketLogger } from '@services/SocketLogger';
+import { IndyDidService } from './Indy/IndyDidService';
+import { IndyStewardService } from './Indy/IndyStewardService';
+import { IndyActor } from '@Model/Indy/Actor';
+import { HtmlServer } from '@Servers/HtmlServer';
+import { SocketServer } from '@Servers/SocketServer';
+import { ConfigSchema, ConfigService } from '@Services/ConfigService';
+import { IndyService } from '@Services/Indy/IndyService';
+import { PoolService } from '@Services/PoolService';
+import { SocketLogger } from '@Services/SocketLogger';
 
 export class PoCService {
   public async start(): Promise<void> {
