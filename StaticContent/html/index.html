@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title>Socket io client</title>
+    <script src="http://localhost:4000/socket.io/socket.io.js"></script>
+    <script>
+        function logToDiv(message) {
+            console.log(message);
+            var node = document.createElement('div');
+            node.innerHTML = JSON.stringify(message);
+            document.getElementsByTagName('body')[0].appendChild(node);
+        }
+        var steward = io("http://localhost:4000");
+        // use your socket
+        steward.on("welcome", (message) => {
+            console.log(message);
+        })
+
+        steward.on("disconnect", () => console.clear());
+
+        steward.on("log", logToDiv);
+
+        var faber = io("http://localhost:4001");
+        // use your socket
+        faber.on("welcome", (message) => {
+            console.log(message);
+        })
+        faber.on("log", logToDiv);
+
+        var alice = io("http://localhost:4002");
+        alice.on("welcome", message => {
+            console.log(message);
+        })
+        alice.on("log", logToDiv);
+
+        function send() {
+            steward.emit('onboard', {
+                name: 'Government',
+                id: 'governmentWallet',
+                key: 'government_key',
+                seed: "000000000000000000000000Govrnmt1"
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <button onclick="send()"> Send info </button>
+</body>
+
+</html>

@@ -12,7 +12,7 @@
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
     "sourceMap": true, /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    "outDir": "./dist" /* Redirect output structure to the directory. */,
+    "outDir": "./Dist" /* Redirect output structure to the directory. */,
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "composite": true,                     /* Enable project compilation */
     // "tsBuildInfoFile": "./",               /* Specify file to store incremental compilation information */
@@ -37,20 +37,26 @@
     // "noFallthroughCasesInSwitch": true,    /* Report errors for fallthrough cases in switch statement. */
     /* Module Resolution Options */
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
-    "baseUrl": "./src", /* Base directory to resolve non-absolute module names. */
+    "baseUrl": "Src", /* Base directory to resolve non-absolute module names. */
     "paths": {
-      "@modules/*": [
-        "modules/*"
+      "@Model/*": [
+        "Model/*"
       ],
-      "@services/*": [
-        "services/*"
+      "@Modules/*": [
+        "Modules/*"
       ],
-      "@servers/*": [
-        "servers/*"
+      "@Services/*": [
+        "Services/*"
+      ],
+      "@Servers/*": [
+        "Servers/*"
+      ],
+      "@Config/*": [
+        "../Config/*"
       ],
       "*": [
         "node_modules/*",
-        "src/types/*"
+        "Src/types/*"
       ]
     }, /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
@@ -68,5 +74,9 @@
     /* Experimental Options */
     // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
-  }
+  },
+  "include": [
+    "Src/**/*",
+    "Index.d.ts"
+  ]
 }

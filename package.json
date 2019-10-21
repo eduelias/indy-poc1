@@ -4,8 +4,11 @@
   "description": "My first Indy Agent PoC",
   "main": "index.js",
   "scripts": {
+    "start": "tsc && node dist/index.js",
+    "debug": "tsc && node dist/index.js --inspect",
     "test": "jest",
-    "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix"
+    "lint": "tsc --noEmit && eslint '*/**/*.{js,ts}' --quiet --fix",
+    "postinstall": "node-config-ts"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsc --noEmit && lint-staged"
+      "pre-commit": "tsc --noEmit && lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
@@ -29,27 +33,36 @@
   },
   "homepage": "https://github.com/eduelias/indy-poc1#readme",
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.3.3",
-    "@typescript-eslint/parser": "^2.3.3",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
     "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.9",
     "jest": "^24.9.0",
+    "lint-staged": "^9.4.2",
+    "node-config-ts": "^2.2.4",
     "prettier": "^1.18.2",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.4"
   },
   "dependencies": {
+    "@types/mkdirp": "^0.5.2",
     "@types/socket.io": "^2.1.4",
     "ffi": "^2.3.0",
+    "indy-sdk": "^1.12.0-dev-1365",
     "module-alias": "^2.2.2",
     "node-vcx-wrapper": "^0.4.2-dev-1356",
     "sleep": "^6.1.0",
     "socket.io": "^2.3.0"
   },
   "_moduleAliases": {
-    "@modules": "dist/modules",
-    "@services": "dist/services",
-    "@servers": "dist/servers"
+    "@Modules": "dist/Modules",
+    "@Services": "dist/Services",
+    "@Servers": "dist/Servers",
+    "@Model": "dist/Model",
+    "@Config": "Config"
   }
 }
