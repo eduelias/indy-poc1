@@ -3,49 +3,38 @@
 <head>
     <title>Socket io client</title>
     <script src="http://localhost:4000/socket.io/socket.io.js"></script>
+    <script src="jsonify.js"></script>
+    <script src="index.js"></script>
     <script>
-        function logToDiv(message) {
-            console.log(message);
-            var node = document.createElement('div');
-            node.innerHTML = JSON.stringify(message);
-            document.getElementsByTagName('body')[0].appendChild(node);
-        }
-        var steward = io("http://localhost:4000");
-        // use your socket
-        steward.on("welcome", (message) => {
-            console.log(message);
-        })
-
-        steward.on("disconnect", () => console.clear());
-
-        steward.on("log", logToDiv);
-
-        var faber = io("http://localhost:4001");
-        // use your socket
-        faber.on("welcome", (message) => {
-            console.log(message);
-        })
-        faber.on("log", logToDiv);
-
-        var alice = io("http://localhost:4002");
-        alice.on("welcome", message => {
-            console.log(message);
-        })
-        alice.on("log", logToDiv);
-
-        function send() {
-            steward.emit('onboard', {
-                name: 'Government',
-                id: 'governmentWallet',
-                key: 'government_key',
-                seed: "000000000000000000000000Govrnmt1"
-            })
-        }
     </script>
+    <style>
+        div{
+            border: 1px Solid Black;
+            overflow: hidden;
+            float:left;
+        }
+        .inline{
+            display: inline-block;
+        }
+    </style> 
 </head>
 
-<body>
-    <button onclick="send()"> Send info </button>
+<body style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-size:0.7em">
+    <div id="stewardform" style="width:100% ">
+        <form id="stewd">
+            Name: <input type="text" id="name" name="name" value="Government" /><br> 
+            DID: <input type="text" id="id" name="id" value="governmentWallet" /><br> 
+            CRED: <input type="text" id="creds" name="key" value="government_key"/><br> 
+            SEED: <input type="text" id="seed" name="seed" value="000000000000000000000000Govrnmt1" /><br>
+        </form>
+        <button onclick="send()"> Send info </button>
+    </div>
+    <div class='inline' style="width:100%">
+        <div id="steward" style="width:24% ">&nbsp;</div>
+        <div id="alice" style="width:25% ">&nbsp;</div>
+        <div id="faber" style="width:25% ">&nbsp;</div>
+        <div id="ledger" style="width:25% ">&nbsp;</div>
+    </div>
 </body>
 
 </html>

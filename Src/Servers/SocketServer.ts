@@ -11,7 +11,7 @@ export class SocketServer {
   events: { [name: string]: (...args: any[]) => void } = {};
   server: io.Server | undefined;
   activeConnection?: io.Socket;
-  constructor(public name: string | undefined, public htmlServer: Server) {
+  constructor(public name: string, public htmlServer: Server) {
     this.server = io(this.htmlServer);
   }
 
@@ -30,9 +30,17 @@ export class SocketServer {
         });
       });
 
+      if (this.events['connection']) {
+        this.events['connection'](socket);
+      }
+
       Object.keys(this.events).map((event) =>
-        socket.on(event, this.events[event]),
+        socket.on(event, (...args: any[]) =>
+          this.events[event](...args, socket),
+        ),
       );
+
+      socket.join(this.name.toLowerCase());
     });
   }
 

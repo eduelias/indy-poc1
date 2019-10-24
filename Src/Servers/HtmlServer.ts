@@ -19,8 +19,16 @@ export class HtmlServer {
   }
 
   public handler(req: IncomingMessage, res: ServerResponse): void {
+    const path = (req.url || '/').split('/');
     readFile(
-      join(__dirname, '..', '..', 'StaticContent', 'html', 'index.html'),
+      join(
+        __dirname,
+        '..',
+        '..',
+        'StaticContent',
+        'html',
+        path[path.length - 1] || 'index.html',
+      ),
       (err, data) => {
         if (err) {
           res.writeHead(500);
