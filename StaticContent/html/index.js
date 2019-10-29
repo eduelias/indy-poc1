@@ -1,6 +1,6 @@
-function logToDiv(to, message, inverse): void {
-  const node = document.createElement('div');
-  node.innerHTML = JSON.stringify(message.message, null, 2);
+function logToDiv(to, message, inverse) {
+  console.log(message);
+  const node = prettyPrint(message.message, { maxDepth: 9, expanded: false }); // JSON.stringify(message.message, null, 2);
   const append = document.getElementById(to);
   if (inverse) {
     append.insertBefore(node, append.childNodes[0]);
@@ -38,13 +38,10 @@ explorer.on('welcome', (message) => {
 });
 explorer.on('log', (message) => logToDiv('ledger', message));
 explorer.on('newtx', (message) => {
-  message.map((item) =>
-    logToDiv(
-      'ledger',
-      { message: { id: item.result.seqNo, data: item.result.data } },
-      true,
-    ),
-  );
+  message.map((item) => {
+    item.result.data.id = item.result.seqNo;
+    return logToDiv('ledger', { message: item.result.data }, true);
+  });
 });
 
 // function send() {
