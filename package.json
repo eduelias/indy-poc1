@@ -51,7 +51,7 @@
   "dependencies": {
     "@types/mkdirp": "^0.5.2",
     "@types/socket.io": "^2.1.4",
-    "aries-sdk-ts-beta": "^0.5.4",
+    "aries-sdk-ts-beta": "../aries-sdk-ts/",
     "bs58": "^4.0.1",
     "express": "^4.17.1",
     "ffi": "^2.3.0",
