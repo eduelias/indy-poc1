@@ -1,6 +1,6 @@
 function logToDiv(to, message, inverse) {
   console.log(message);
-  const node = prettyPrint(message.message, { maxDepth: 9, expanded: false }); // JSON.stringify(message.message, null, 2);
+  const node = prettyPrint(message.message, { maxDepth: 99, expanded: true }); // JSON.stringify(message.message, null, 2);
   const append = document.getElementById(to);
   if (inverse) {
     append.insertBefore(node, append.childNodes[0]);
@@ -19,18 +19,18 @@ steward.on('disconnect', () => console.clear());
 
 steward.on('log', (message) => logToDiv('steward', message));
 
-const government = io('http://localhost:4001');
-// use your socket
-government.on('welcome', (message) => {
-  console.log(message);
-});
-government.on('log', (message) => logToDiv('government', message));
+// const government = io('http://localhost:4001');
+// // use your socket
+// government.on('welcome', (message) => {
+//   console.log(message);
+// });
+// government.on('log', (message) => logToDiv('government', message));
 
-const alice = io('http://localhost:4002');
-alice.on('welcome', (message) => {
-  console.log(message);
-});
-alice.on('log', (message) => logToDiv('alice', message));
+// const alice = io('http://localhost:4002');
+// alice.on('welcome', (message) => {
+//   console.log(message);
+// });
+// alice.on('log', (message) => logToDiv('alice', message));
 
 const explorer = io('http://localhost:4040');
 explorer.on('welcome', (message) => {
