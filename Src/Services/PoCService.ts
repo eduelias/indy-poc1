@@ -23,16 +23,18 @@ export class PoCService {
       label: 'Steward',
       walletName: 'Steward Wallet',
       walletKey: 'steward_key',
+      publicDid: 'Th7MpTaRZVRYnPiabds81Y',
       publicDidSeed: '000000000000000000000000Steward1',
     });
 
-    const government = new RestAgency();
-    government.run({
+    const steward3 = new RestAgency();
+    steward3.run({
       url: new URL('http://localhost:3001'),
-      label: 'Government',
-      walletName: 'governmentWallet',
-      walletKey: 'government_key',
-      publicDidSeed: '000000000000000000000000Govrnmt1',
+      label: 'Steward3',
+      walletName: 'steward3Wallet',
+      walletKey: 'steward3wallet_key',
+      publicDid: '4cU41vWW82ArfxJxHkzXPG',
+      publicDidSeed: '000000000000000000000000Steward3',
     });
 
     const ledgerExplorer = new SocketServer(
