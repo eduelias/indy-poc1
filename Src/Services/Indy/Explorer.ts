@@ -30,7 +30,7 @@ const role = {
   ROLE_REMOVE: '',
 };
 
-const ledger = {
+const ledgerType = {
   POOL: 0,
   DOMAIN: 1,
   CONFIG: 2,
@@ -203,4 +203,4 @@ function IndyReq(conf) {
   };
   return api;
 }
-export { IndyReq, type, role, ledger, addSignature };
+export { IndyReq, type, role, ledgerType, addSignature };
