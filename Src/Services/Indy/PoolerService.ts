@@ -62,7 +62,7 @@ export async function queryPage(
   index = 1,
 ): Promise<void> {
   return new Promise(async (resolve, reject) => {
-    const page = index;
+    // const page = index;
     const foundationBuilderNode = getIndy();
     while (true) {
       if (String(getVal(ledger, index)) !== 'undefined') break;
@@ -80,11 +80,9 @@ export async function queryPage(
 
       if (!current.result.data) break;
 
-      (db[ledger] as any)[index] = current;
+      (db[ledger] as any)[index] = current.result.data;
       index++;
     }
-
-    console.log(`Resolved page ${ledger}/${page}.`);
     resolve();
     foundationBuilderNode.close();
   });
@@ -126,12 +124,12 @@ async function definePoolSizes(): Promise<{ [key: string]: number }> {
   for (const ledger of ledgers) {
     const tx = buildTx(ledger, 1);
     const resp = await indy.send(tx);
-    r[ledger] = resp.result?.data?.ledgerSize || defaultSizes[ledger];
+    r[ledger] = resp?.result?.data?.ledgerSize || defaultSizes[ledger];
   }
   return r;
 }
 
-const FACTOR = 0.1;
+//const FACTOR = 0.1;
 
 export class PoolerService {
   public async Init(): Promise<void> {
@@ -143,14 +141,17 @@ export class PoolerService {
       console.log(
         `Loaded DOMAIN: [${parseFloat(
           (
-            (db.DOMAIN.filter((tx: any) => tx && tx.result).length /
-              poolSizes['DOMAIN']) *
+            (db.DOMAIN.filter((tx: any) => tx).length / poolSizes['DOMAIN']) *
+            100
+          ).toString(),
+        ).toFixed(2)}%], POOL: [${parseFloat(
+          (
+            (db.POOL.filter((tx: any) => tx).length / poolSizes['POOL']) *
             100
           ).toString(),
         ).toFixed(2)}%] and CONFIG: [${parseFloat(
           (
-            (db.CONFIG.filter((tx: any) => tx && tx.result).length /
-              poolSizes['CONFIG']) *
+            (db.CONFIG.filter((tx: any) => tx).length / poolSizes['CONFIG']) *
             100
           ).toString(),
         ).toFixed(2)}%]. ${sizeof(db.DOMAIN)}`,
@@ -166,7 +167,7 @@ export class PoolerService {
       ...buildPromises(
         (n) => queryPage('CONFIG', n),
         poolSizes['CONFIG'],
-        Math.ceil(poolSizes['CONFIG'] * FACTOR),
+        Math.ceil(poolSizes['CONFIG'] * 0.07),
       ),
       ...buildPromises(
         (n) => queryPage('DOMAIN', n),
